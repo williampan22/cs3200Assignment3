@@ -75,11 +75,11 @@ WHERE tracks.GenreId NOT IN (
 
 SELECT DISTINCT tracks.TrackId, tracks.Name, playlists.PlaylistId, playlists.Name AS PlaylistName
 FROM customers
-JOIN invoices ON customers.CustomerId = invoices.CustomerId
-JOIN invoice_items ON invoices.InvoiceId = invoice_items.InvoiceId
-JOIN tracks ON invoice_items.TrackId = tracks.TrackId
-JOIN playlist_track ON tracks.TrackId = playlist_track.TrackId
-JOIN playlists ON playlist_track.PlaylistId = playlists.PlaylistId
+INNER JOIN invoices ON customers.CustomerId = invoices.CustomerId
+INNER JOIN invoice_items ON invoices.InvoiceId = invoice_items.InvoiceId
+INNER JOIN tracks ON invoice_items.TrackId = tracks.TrackId
+INNER JOIN playlist_track ON tracks.TrackId = playlist_track.TrackId
+INNER JOIN playlists ON playlist_track.PlaylistId = playlists.PlaylistId
 WHERE customers.CustomerId = (
     SELECT CustomerId
     FROM invoices
