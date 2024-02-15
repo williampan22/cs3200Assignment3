@@ -3,8 +3,8 @@
 -- A music video is a track. There cannot be a video without a track, and each track can have either no video or just one. 
 
 CREATE TABLE "music_video" (
-    "TrackId"	INTEGER NOT NULL,
-	"VideoDirector"	TEXT NOT NULL,
-	PRIMARY KEY("TrackID"),
-	FOREIGN KEY("TrackID") REFERENCES "tracks"("TrackId")
+    "trackId"	INTEGER NOT NULL,
+	"videoDirector"	TEXT NOT NULL,
+	PRIMARY KEY("trackID"),
+	FOREIGN KEY("trackID") REFERENCES "tracks"("trackId")
 )
