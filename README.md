@@ -1,89 +1,45 @@
-## AUTHOR: WILLIAM PAN
+# Music Database Example Queries
 
-## Query 1: 
-## Create a new Table Music Video, that is a class of type Track (generalization) but adds the attribute Video director. 
-## A music video is a track. There cannot be a video without a track, and each track can have either no video or just one. 
+WILLIAM PAN
 
-CREATE TABLE "music_video" (
-    "trackId"	INTEGER NOT NULL,
-	"videoDirector"	TEXT NOT NULL,
-	PRIMARY KEY("trackID"),
-	FOREIGN KEY("trackID") REFERENCES "tracks"("TrackId")
-)
+Some example queries made for assignment 3 NU CS 3200 Spring 2024. Assignment description:
 
-## Query 2: 
-## Write the queries that insert at least 10 videos, respecting the problem rules.
+  Instructions
 
-INSERT INTO music_video (trackId, videoDirector) VALUES (1, 'William Pan');
-INSERT INTO music_video (trackId, videoDirector) VALUES (2, 'Danny Does');
-INSERT INTO music_video (trackId, videoDirector) VALUES (3, 'John Gomez');
-INSERT INTO music_video (trackId, videoDirector) VALUES (4, 'Ellen Spertus');
-INSERT INTO music_video (trackId, videoDirector) VALUES (5, 'Susan Wang');
-INSERT INTO music_video (trackId, videoDirector) VALUES (6, 'Alex Gomez');
-INSERT INTO music_video (trackId, videoDirector) VALUES (7, 'Aarsh Wang');
-INSERT INTO music_video (trackId, videoDirector) VALUES (8, 'Samyutha Srinivasan');
-INSERT INTO music_video (trackId, videoDirector) VALUES (9, 'Rhianna Star');
-INSERT INTO music_video (trackId, videoDirector) VALUES (10, 'Rangoli Goyal');
+  In this assignment you will practice the SQL skills developed in the course. For this, we will be using the sample SQLITE database found on https://www.sqlitetutorial.net/sqlite-sample-database/ . Download the database, and then, complete the following tasks:
 
-## Query 3:  
-## Insert another video for the track "Voodoo", assuming that you don't know the TrackId, 
-## so your insert query should specify the TrackId directly.
+  Query 1: Create a new Table Music Video, that is a class of type Track (generalization) but adds the attribute Video director. A music video is a track. There cannot be a video without a track, and each track can have either no video or just one. 
+  Query 2: Write the queries that insert at least 10 videos, respecting the problem rules. Insert another video for the track
+  Query 3: "Voodoo", assuming that you don't know the TrackId, so your insert query should specify the TrackId directly.
 
-INSERT INTO music_video (trackId, videoDirector)
-SELECT TrackId, 'John Alexis Guerra Gomez'
-FROM tracks
-WHERE Name = 'Voodoo';
+  Tip: For a different database with People and Quotes, here is how to insert a Quote from the name of the Person
 
-## Query 4:  
-## Write a query that lists all the customers that listen to longer#than#average tracks, 
-## excluding the tracks that are longer than 15 minutes. 
+  -- Inserts John in the Person table
 
-## there are 1000 milliseconds in a second
+  INSERT INTO Persons(name) VALUES("John");
 
-SELECT DISTINCT customers.CustomerId, customers.FirstName, customers.LastName
-FROM customers
-INNER JOIN invoices ON customers.CustomerId = invoices.CustomerId
-INNER JOIN invoice_items ON invoices.InvoiceId = invoice_items.InvoiceId
-INNER JOIN tracks ON invoice_items.TrackId = tracks.TrackId
-WHERE tracks.Milliseconds < 60*15*1000 AND tracks.Milliseconds > (SELECT AVG(Milliseconds) FROM tracks);
+  -- Inserts a new Quote for John
 
-## Query 5:  
-## Write a query that lists all the tracks that are not in one of the top 5 genres with longer duration in the database. 
+  INSERT INTO Quote(person_id, quote)
+      SELECT person_id, "It Worked 🎉"
+      FROM Person
+      WHERE name == "John"
 
-## THIS IS HOW I INTERPRETED THIS QUERY (John told me to write how I interpret the query because it was unclear)
-## Select the tracks that are all in the genres except the 5 genres that have the longest average duration song lengths.
+  Query 4:  Write a query that lists all the customers that listen to longer-than-average tracks, excluding the tracks that are longer than 15 minutes. 
+  Query 5:  Write a query that lists all the tracks that are not in one of the top 5 genres with longer duration in the database. 
+  Query 6:  Define an insightful query on your own that involves at least three tables
 
-SELECT DISTINCT tracks.TrackId, tracks.Name 
-FROM tracks
-WHERE tracks.GenreId NOT IN (
-    SELECT GenreId
-    FROM (
-        SELECT DISTINCT genres.GenreId, AVG(tracks.Milliseconds) AS AverageDuration
-        FROM genres
-        INNER JOIN tracks ON genres.GenreId = tracks.GenreId
-        GROUP BY genres.GenreId
-        ORDER BY AverageDuration DESC
-        LIMIT 5
-    )
-);
 
-## Query 6:  
-## Define an insightful query on your own that involves at least three tables
+## Format
 
-## MY INSIGHTFUL QUERY IS THIS: 
-## LIST ALL THE TRACKS FROM ALL THE PLAYLISTS FROM THE CUSTOMER WHO HAS THE MOST INVOICES
+There is one file for each query assignment3.sql
 
-SELECT DISTINCT tracks.TrackId, tracks.Name, playlists.PlaylistId, playlists.Name AS PlaylistName
-FROM customers
-JOIN invoices ON customers.CustomerId = invoices.CustomerId
-JOIN invoice_items ON invoices.InvoiceId = invoice_items.InvoiceId
-JOIN tracks ON invoice_items.TrackId = tracks.TrackId
-JOIN playlist_track ON tracks.TrackId = playlist_track.TrackId
-JOIN playlists ON playlist_track.PlaylistId = playlists.PlaylistId
-WHERE customers.CustomerId = (
-    SELECT CustomerId
-    FROM invoices
-    GROUP BY CustomerId
-    ORDER BY COUNT(*) DESC
-    LIMIT 1
-);
+
+## How to run it 
+
+1. Open DB Browser
+2. Click the "Open database" button and select the attatched database called chinook.db
+3. Click on execute SQL
+4. Copy paste each query from the query files
+5. Click the execute all button (play button)
+6. If the query is a SELECT statement, it will show after executing. If it is an insert statement, you can search for it after clicking the browse data button and selecting the table.
