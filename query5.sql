@@ -9,7 +9,7 @@ FROM tracks
 WHERE tracks.GenreId NOT IN (
     SELECT GenreId
     FROM (
-        SELECT DISTINCT genres.GenreId, AVG(tracks.Milliseconds) AS AverageDuration
+        SELECT genres.GenreId, AVG(tracks.Milliseconds) AS AverageDuration
         FROM genres
         INNER JOIN tracks ON genres.GenreId = tracks.GenreId
         GROUP BY genres.GenreId
@@ -17,3 +17,6 @@ WHERE tracks.GenreId NOT IN (
         LIMIT 5
     )
 );
+
+-- I gave ChatGPT my first, second, third, and fourth queries that I knew were correct. I then asked GPT how to to find all the names of the tracks
+-- that are all in the genres except the 5 genres that have the longest average duration song lengths.

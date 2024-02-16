@@ -8,3 +8,4 @@ CREATE TABLE "music_video" (
 	PRIMARY KEY("TrackID"),
 	FOREIGN KEY("TrackID") REFERENCES "tracks"("TrackId")
 )
+
